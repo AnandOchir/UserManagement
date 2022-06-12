@@ -1,0 +1,30 @@
+type Group {
+  name: String
+  owner: String
+  users: [Users]
+  createdAt: String
+}
+
+type GroupPermissions {
+  addUser: Boolean,
+  removeUser: Boolean,
+}
+
+type Users {
+  uid: String,
+  permissions: GroupPermissions
+}
+
+type Query {
+  getGroups(uid: String!): [Group]
+}
+
+input GroupPermissionsInput {
+  addUser: Boolean,
+  removeUser: Boolean
+}
+
+type Mutation {
+  addGroup(name: String!, uid: String!): Group
+  inviteUserToGroup(uid: String!, permissions: GroupPermissionsInput!, groupId: String!): Group
+}
