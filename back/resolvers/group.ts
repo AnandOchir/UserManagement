@@ -1,25 +1,15 @@
-import { Group, User } from "../models";
+import { Group } from "../models";
 
-const getGroups = async (_: any, { uid }: any) => {
-  return await User.find({
-    owner: uid
-  });
+const getGroups = async (_: any, params: any) => {
+  return await Group.find(params ? params : {});
 }
 
-const addGroup = async (_: any, { name, uid }: any) => {
+const addGroup = async (_: any, { name }: any) => {
   const date = new Date();
-  const users = [{
-    uid: uid,
-    permissions: {
-      addUser: true,
-      removeUser: true
-    }
-  }]
   const group = new Group({
     name: name,
     createdAt: date.toISOString(),
-    owner: uid,
-    users: users
+    users: []
   })
 
   try {
@@ -47,8 +37,31 @@ const inviteUserToGroup = async (_: any, { uid, permissions, groupId }: any) => 
   }
 }
 
+const removeUserFromGroup = async (_: any, { uid, groupId }: any) => {
+  try {
+    await Group.updateOne(
+      { '_id': groupId },
+      { $pull: { users: { uid: uid } } }
+    )
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+const removeGroup = async (_: any, { _id }: any) => {
+  try {
+    await Group.deleteOne({_id: _id})
+    return true
+  } catch(err) {
+    return false
+  }
+}
+
 export {
   getGroups,
   addGroup,
-  inviteUserToGroup
+  inviteUserToGroup,
+  removeUserFromGroup,
+  removeGroup
 }

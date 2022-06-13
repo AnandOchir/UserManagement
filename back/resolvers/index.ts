@@ -1,22 +1,31 @@
 import {
   getUsers,
-  addUser
+  addUser,
+  removeUser,
+  getUser
 } from './user'
 import {
   addGroup,
   getGroups,
-  inviteUserToGroup
+  inviteUserToGroup,
+  removeUserFromGroup,
+  removeGroup
 } from './group'
+
 
 export default {
   Query: {
     hello: () => "Hello World2",
     getUsers,
-    getGroups
+    getGroups,
+    getUser
   },
   Mutation: {
     addUser,
     addGroup,
-    inviteUserToGroup
+    inviteUserToGroup,
+    removeUser,
+    removeUserFromGroup,
+    removeGroup
   }
 }

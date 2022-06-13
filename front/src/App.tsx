@@ -1,9 +1,13 @@
-import { Layout } from './layout';
 import Router from './router';
+import { apolloClient } from './graphql'
+import { ApolloProvider } from '@apollo/client';
 
 const App = () => {
+  sessionStorage.clear()
   return (
-    <Router />
+    <ApolloProvider client={apolloClient} >
+      <Router />
+    </ApolloProvider>
   );
 }
 

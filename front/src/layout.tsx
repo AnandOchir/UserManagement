@@ -1,17 +1,37 @@
 import { Box, Button, CssBaseline, Input } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { GroupIcon, HomeIcon, MenuIcon, SearchIcon } from "./icons"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Layout = ({ children }: any) => {
-  let navigate = useNavigate();
-
+  const navigate = useNavigate();
+  const location = useLocation()
+  const [searchValue, setSearchValue] = useState('')
   const goHome = () => {
     navigate("/");
   }
 
-  const [searchValue, setSearchValue] = useState('')
-  console.log(window.innerHeight)
+  const goGroup = () => {
+    navigate("/groups");
+  }
+
+  useEffect(() => {
+    if(location.pathname === '/' || location.pathname === '/users') {
+      if(searchValue !== '') {
+        navigate(`/users?search=${searchValue}`);
+      } else {
+        navigate(`/`);
+      }
+    }
+    if(location.pathname === '/groups') {
+      if(searchValue !== '') {
+        navigate(`/groups?search=${searchValue}`);
+      } else {
+        navigate(`/groups`);
+      }
+    }
+  }, [searchValue])
+
   return (
     <Box sx={{ margin: 0, width: '100%', height: '100%' }} >
       <CssBaseline />
@@ -27,7 +47,7 @@ export const Layout = ({ children }: any) => {
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 2, width: '100%' }} >
           <SearchIcon width={20} height={20} />
-          <Input sx={{ width: '90%', marginLeft: 1 }} disableUnderline placeholder="Search.." value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+          <Input sx={{ width: '90%', marginLeft: 1 }} disableUnderline placeholder={location.pathname === '/' ? 'Search Name, phone or role..' : 'Search Group..'} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
         </Box>
       </Box>
       <Box sx={{ display: 'flex' }} >
@@ -46,9 +66,9 @@ export const Layout = ({ children }: any) => {
             <Button onClick={goHome} >
               <HomeIcon width={30} height={30} />
             </Button>
-            <GroupIcon width={30} height={30} />
-            <HomeIcon width={30} height={30} />
-            <HomeIcon width={30} height={30} />
+            <Button onClick={goGroup} >
+              <GroupIcon width={30} height={30} />
+            </Button>
           </Box>
         </Box>
         {children}

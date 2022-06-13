@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions } from "@mui/material"
 import { Box } from "@mui/system"
 
 
-export const PopUp = ({ closeFunction = null, acceptFunction = null, popup = false, setPopup, closeValue = 'No', acceptValue = 'Yes' ,children }: any) => {
+export const PopUp = ({ ifClickedOutsideClose = true ,closeFunction = null, acceptFunction = null, popup = false, setPopup, closeValue = 'No', acceptValue = 'Yes', children }: any) => {
   const close = () => {
     if(closeFunction) {
       closeFunction()
@@ -20,14 +20,18 @@ export const PopUp = ({ closeFunction = null, acceptFunction = null, popup = fal
   return (
     <Dialog
       open={popup}
-      onClose={() => setPopup(false)}
+      onClose={() => ifClickedOutsideClose && setPopup(false)}
     >
       <Box sx={{ padding: 2 }}>
         {children}
       </Box>
       <DialogActions>
-        <Button onClick={close}>{closeValue}</Button>
-        <Button onClick={accept} autoFocus>{acceptValue}</Button>
+        {
+          closeValue && <Button onClick={close}>{closeValue}</Button>
+        }
+        {
+          acceptValue && <Button onClick={accept} autoFocus>{acceptValue}</Button>
+        }
       </DialogActions>
     </Dialog>
   )

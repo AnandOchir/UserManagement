@@ -9,6 +9,7 @@ const Router = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="users" element={<Home />} />
           <Route path="groups" element={<Groups />} />
         </Routes>
       </Layout>
